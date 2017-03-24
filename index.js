@@ -125,24 +125,12 @@ function getFile(filePath, returnFields, auth, callback) {
 }
 
 /**
- * Creates a google drive folder with path specified in root directory if not exists,
- *   and returns the id and url of the target folder via callback(err, id, url).
+ * Creates a google drive folder with path specified.
  * @param  folderPath folder path to search for / create if not exists
  * @param  returnFields fields in Google file resource to return (comma separated)
  * @param  auth OAuth2 client for accessing user's Google Drive
  * @param  err, folder where folder is the Google Drive folder resource object
  */
-function createFolderIfNotExists(folderPath, returnFields, auth, callback) {
-    getFolder(folderPath, returnFields, auth, (err, folder) => {
-        // If folder already exists, simply return
-        if (folder) {
-            return callback(null, folder);
-        }
-        return createFolder(folderPath, returnFields, auth, callback);     
-    });
-}
-
-/** See documentation for createFolderIfNotExists. */
 function createFolder(folderPath, returnFields, auth, callback) {
     const parentPath = path.dirname(folderPath);     
     const childPath = path.basename(folderPath);
@@ -164,6 +152,17 @@ function createFolder(folderPath, returnFields, auth, callback) {
             return callback(null, folder);
         });
     });    
+}
+
+/** See documentation for createFolder. */
+function createFolderIfNotExists(folderPath, returnFields, auth, callback) {
+    getFolder(folderPath, returnFields, auth, (err, folder) => {
+        // If folder already exists, simply return
+        if (folder) {
+            return callback(null, folder);
+        }
+        return createFolder(folderPath, returnFields, auth, callback);     
+    });
 }
 
 /**
