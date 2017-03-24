@@ -176,7 +176,7 @@ function createFolder(folderPath, returnFields, auth, callback) {
  */
 function uploadFile(filePath, uploadPath, returnFields, auth, callback) {
     const parentPath = path.dirname(uploadPath);
-    createFolderIfNotExists(parentPath, returnFields, auth, (err, parentFolder) => {        
+    createFolderIfNotExists(parentPath, returnFields, auth, (err, parentFolder) => {
         google.drive('v3').files.create({
             auth: auth,
             resource: {
@@ -187,19 +187,14 @@ function uploadFile(filePath, uploadPath, returnFields, auth, callback) {
                 body: fs.createReadStream(filePath)
             },
             fields: returnFields
-        }, (err, newFile) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(err, newFile);
-        });
+        }, callback);
     });
 }
 
 /** See documentation for uploadFile. */
-function uploadFileIfNotExists(filePath, uploadPath, returnFields, auth, callback) {    
+function uploadFileIfNotExists(filePath, uploadPath, returnFields, auth, callback) {
     getFile(uploadPath, returnFields, auth, (err, existingFile) => {
-        if (!err) {
+        if (existingFile) {
             return callback(null, existingFile);
         }
         return uploadFile(filePath, uploadPath, returnFields, auth, callback);
