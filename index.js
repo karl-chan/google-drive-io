@@ -8,7 +8,7 @@ module.exports = {
     uploadFileIfNotExists: uploadFileIfNotExists
 }
 
-const google = require('googleapis');
+const { google } = require('googleapis');
 const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
