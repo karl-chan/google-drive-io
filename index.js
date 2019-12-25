@@ -48,7 +48,7 @@ function getRootFolder(returnFields, auth, callback) {
         fileId: 'root',
         fields: returnFields,
         spaces: 'drive'
-    }, (err, folder) => {
+    }, (err, {data: folder}) => {
         if (err) {
             return callback(err);
         }
@@ -70,7 +70,7 @@ function _getFolderRecursive(parent, childPath, returnFields, auth, callback) {
              and trashed=false`,
         fields: `files(${returnFields})`,
         spaces: 'drive'
-    }, (err, res) => {
+    }, (err, {data: res}) => {
         if (err) {
             return callback(err);
         } else if (res.files.length == 0) {
@@ -107,7 +107,7 @@ function getFile(filePath, returnFields, auth, callback) {
             q: `'${parentFolder.id}' in parents and name='${childPath}' and trashed=false`,
             fields: `files(${returnFields})`,
             spaces: 'drive'
-        }, (err, res) => {
+        }, (err, {data: res}) => {
             if (err) {
                 return callback(err);
             } else if (res.files.length == 0) {
@@ -145,7 +145,7 @@ function createFolder(folderPath, returnFields, auth, callback) {
                 mimeType: 'application/vnd.google-apps.folder'
             },
             fields: returnFields
-        }, (err, folder) => {
+        }, (err, {data: folder}) => {
             if (err) {
                 return callback(err);
             }
@@ -186,7 +186,7 @@ function uploadFile(filePath, uploadPath, returnFields, auth, callback) {
                 body: fs.createReadStream(filePath)
             },
             fields: returnFields
-        }, callback);
+        }, (err, {data: uploaded}) =>  callback(err, uploaded));
     });
 }
 

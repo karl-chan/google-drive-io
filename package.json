@@ -1,6 +1,6 @@
 {
   "name": "google-drive-io",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Library that makes file access in Google Drive easy",
   "main": "index.js",
   "scripts": {
