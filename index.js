@@ -48,11 +48,11 @@ function getRootFolder(returnFields, auth, callback) {
         fileId: 'root',
         fields: returnFields,
         spaces: 'drive'
-    }, (err, {data: folder}) => {
+    }, (err, res) => {
         if (err) {
             return callback(err);
         }
-        return callback(null, folder);
+        return callback(null, res.data);
     }); 
 }
 
@@ -70,18 +70,18 @@ function _getFolderRecursive(parent, childPath, returnFields, auth, callback) {
              and trashed=false`,
         fields: `files(${returnFields})`,
         spaces: 'drive'
-    }, (err, {data: res}) => {
+    }, (err, res) => {
         if (err) {
             return callback(err);
-        } else if (res.files.length == 0) {
+        } else if (res.data.files.length == 0) {
             return callback(new Error(`Folder ${head} not found`));
         }
 
-        if (res.files.length > 1) {
-            console.warn(new Error(`Found ${res.files.length} duplicate folders of name ${head}`));
+        if (res.data.files.length > 1) {
+            console.warn(new Error(`Found ${res.data.files.length} duplicate folders of name ${head}`));
         }
         // Found the folder we want, set its id to parent and recurse
-        const folder = res.files[0];
+        const folder = res.data.files[0];
         return _getFolderRecursive(folder, tail, returnFields, auth, callback);
     });    
 }
@@ -107,18 +107,18 @@ function getFile(filePath, returnFields, auth, callback) {
             q: `'${parentFolder.id}' in parents and name='${childPath}' and trashed=false`,
             fields: `files(${returnFields})`,
             spaces: 'drive'
-        }, (err, {data: res}) => {
+        }, (err, res) => {
             if (err) {
                 return callback(err);
-            } else if (res.files.length == 0) {
+            } else if (res.data.files.length == 0) {
                 return callback(new Error(`File ${filePath} not found`));
             }
 
-            if (res.files.length > 1) {
-                console.warn(new Error(`Found ${res.files.length} duplicate files of name ${childPath}`));
+            if (res.data.files.length > 1) {
+                console.warn(new Error(`Found ${res.data.files.length} duplicate files of name ${childPath}`));
             }
             // Found the file we want
-            const file = res.files[0];
+            const file = res.data.files[0];
             return callback(null, file);
         });
     });
@@ -145,11 +145,11 @@ function createFolder(folderPath, returnFields, auth, callback) {
                 mimeType: 'application/vnd.google-apps.folder'
             },
             fields: returnFields
-        }, (err, {data: folder}) => {
+        }, (err, res) => {
             if (err) {
                 return callback(err);
             }
-            return callback(null, folder);
+            return callback(null, res.folder);
         });
     });    
 }
@@ -186,7 +186,12 @@ function uploadFile(filePath, uploadPath, returnFields, auth, callback) {
                 body: fs.createReadStream(filePath)
             },
             fields: returnFields
-        }, (err, {data: uploaded}) =>  callback(err, uploaded));
+        }, (err, res) => {
+            if (err) {
+                return callback(err);
+            }
+            return callback(err, res.data);
+        });
     });
 }
 
