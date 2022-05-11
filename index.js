@@ -137,6 +137,9 @@ function createFolder(folderPath, returnFields, auth, callback) {
 
     // Create parent folder first if not exists, then create child folder
     createFolderIfNotExists(parentPath, returnFields, auth, (err, parentFolder) => {
+        if (err) {
+            return callback(err);
+        }
         google.drive('v3').files.create({
             auth: auth,
             resource: {
@@ -176,6 +179,9 @@ function createFolderIfNotExists(folderPath, returnFields, auth, callback) {
 function uploadFile(filePath, uploadPath, returnFields, auth, callback) {
     const parentPath = path.dirname(uploadPath);
     createFolderIfNotExists(parentPath, returnFields, auth, (err, parentFolder) => {
+        if (err) {
+            return callback(err);
+        }
         google.drive('v3').files.create({
             auth: auth,
             resource: {
