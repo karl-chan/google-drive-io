@@ -2,7 +2,7 @@
 import { createReadStream } from 'fs'
 import { drive_v3, google } from 'googleapis'
 import { OAuth2Client } from 'googleapis-common'
-import path from 'path'
+import * as path from 'path'
 
 const drive = google.drive('v3')
 
