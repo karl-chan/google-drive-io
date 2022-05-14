@@ -125,12 +125,12 @@ export async function createFolder (folderPath: string, returnFields: string, au
 
 /** See documentation for createFolder. */
 export async function createFolderIfNotExists (folderPath: string, returnFields: string, auth: OAuth2Client): Promise<drive_v3.Schema$File> {
-  const folder = await getFolder(folderPath, returnFields, auth)
-  // If folder already exists, simply return
-  if (folder) {
-    return folder
+  try {
+    // If folder already exists, simply return
+    return getFolder(folderPath, returnFields, auth)
+  } catch (ignored) {
+    return createFolder(folderPath, returnFields, auth)
   }
-  return createFolder(folderPath, returnFields, auth)
 }
 
 /**
@@ -160,11 +160,11 @@ export async function uploadFile (filePath: string, uploadPath: string, returnFi
 
 /** See documentation for uploadFile. */
 export async function uploadFileIfNotExists (filePath: string, uploadPath: string, returnFields: string, auth: OAuth2Client): Promise<drive_v3.Schema$File> {
-  const existingFile = await getFile(uploadPath, returnFields, auth)
-  if (existingFile) {
-    return existingFile
+  try {
+    return getFile(uploadPath, returnFields, auth)
+  } catch (ignored) {
+    return uploadFile(filePath, uploadPath, returnFields, auth)
   }
-  return uploadFile(filePath, uploadPath, returnFields, auth)
 }
 
 /**
