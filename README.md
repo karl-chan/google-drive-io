@@ -9,7 +9,7 @@ The official Google Drive API requires fetching of files by their id.  This is p
 
 This library exposes a number of utility methods that aid file IO in Google Drive:
 
-* `getFolder(folderPath, returnFields, auth, callback)`
+* `getFolder (folderPath, returnFields, auth)`
    
    ```
    Attempts to fetch a google drive folder with path specified.
@@ -17,20 +17,20 @@ This library exposes a number of utility methods that aid file IO in Google Driv
    @param  folderPath folder path to search for
    @param  returnFields fields in Google file resource to return (comma separated)
    @param  auth OAuth2 client for accessing user's Google Drive
-   @param  callback(err, folder) where folder is the Google Drive folder resource object
+   @returns the Google Drive folder resource object
    ```
 
-* `getRootFolder(returnFields, auth, callback)`
+* `getRootFolder (returnFields, auth)`
 
    ```
    Attempts to fetch the root directory in google drive.
    Returns Google Drive file resource object if exists, otherwise err via callback(err, folder).
    @param  returnFields fields in Google file resource to return (comma separated)
    @param  auth OAuth2 client for accessing user's Google Drive
-   @param  callback(err, folder) where folder is the Google Drive folder resource object
+   @returns the Google Drive file resource object
    ```
 
-* `getFile(filePath, returnFields, auth, callback)`
+* `getFile(filePath, returnFields, auth)`
 
    ```
    Attempts to fetch a google drive file with path specified.
@@ -38,26 +38,26 @@ This library exposes a number of utility methods that aid file IO in Google Driv
    @param  filePath file path to search for
    @param  returnFields fields in Google file resource to return (comma separated)
    @param  auth OAuth2 client for accessing user's Google Drive
-   @param  callback(err, folder) where file is the Google Drive file resource object
+   @returns the Google Drive folder resource object
    ```
 
-* `createFolder(folderPath, returnFields, auth, callback)`
+* `createFolder(folderPath, returnFields, auth)`
 
    ```
    Creates a google drive folder with path specified.
    @param  folderPath folder path to search for / create if not exists
    @param  returnFields fields in Google file resource to return (comma separated)
    @param  auth OAuth2 client for accessing user's Google Drive
-   @param  err, folder where folder is the Google Drive folder resource object
+   @returns the Google Drive folder resource object
    ```
 
-* `createFolderIfNotExists(folderPath, returnFields, auth, callback)`
+* `createFolderIfNotExists(folderPath, returnFields, auth)`
 
    ```
    See documentation for `createFolder`.
    ```
 
-* `uploadFile(filePath, uploadPath, returnFields, auth, callback)`
+* `uploadFile(filePath, uploadPath, returnFields, auth)`
 
    ```
    Upload a file to google drive.
@@ -65,10 +65,10 @@ This library exposes a number of utility methods that aid file IO in Google Driv
    @param  uploadPath path to upload to in Google Drive
    @param  returnFields fields in Google file resource to return (comma separated)
    @param  auth OAuth2 client for accessing user's Google Drive
-   @param  callback(err, newFile) where newFile is Google Drive file resource object of the uploaded file
+   @returns the Google Drive file resource object of the uploaded file
    ```
 
-* `uploadFileIfNotExists(filePath, uploadPath, returnFields, auth, callback)`
+* `uploadFileIfNotExists(filePath, uploadPath, returnFields, auth)`
 
    ```
    See documentation for `uploadFile`.
